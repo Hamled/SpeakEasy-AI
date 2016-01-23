@@ -60,10 +60,6 @@ class Seq2SeqModel(object):
         self.learning_rate * learning_rate_decay_factor)
     self.global_step = tf.Variable(0, trainable=False) 
 
-    # Summary variables. NOTE: added these.
-    # self.summary_op_learning_rate = tf.scalar_summary('learning rate', self.learning_rate)
-    # self.summary_op_global_step = tf.scalar_summary('global step', self.global_step)
-
     # If we use sampled softmax, we need an output projection.
     output_projection = None
     softmax_loss_function = None
@@ -250,7 +246,7 @@ class Seq2SeqModel(object):
           output_feed.append(self.outputs[l])
 
     # NOTE: added final arg for summaries
-    # output_feed.append(merged_summaries)
+    output_feed.append(merged_summaries)
     outputs = session.run(output_feed, input_feed)
 
     # NOTE: added outputs[-1] prefix with summaries to both exit paths
@@ -298,7 +294,7 @@ class Seq2SeqModel(object):
       decoder_inputs.append([data_utils.GO_ID] + decoder_input +
                             [data_utils.PAD_ID] * decoder_pad_size)
 
-    # Now we create batch-major vectors from the data selected above.
+    # Create batch-major vectors from the data selected above.
     batch_encoder_inputs, batch_decoder_inputs, batch_weights = [], [], []
 
     # Batch encoder inputs are just re-indexed encoder_inputs.

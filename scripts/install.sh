@@ -12,7 +12,12 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
   if [[ "$use_gpu" == "y" || "$use_gpu" == "Y" ]]; then
     echo "Using GPU!!!"
-    TENSORFLOW_PACKAGE=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl
+    # Instead of using the standard Google-released GPU-enabled Linux distro,
+    # We build our own pip package based on this gist: https://gist.github.com/erikbern/78ba519b97b440e10640
+    TENSORFLOW_PACKAGE=https://s3.amazonaws.com/gelsto-data/tensorflow-release/gpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl
+
+    # If you *really* want the stock build, use this instead:
+    #TENSORFLOW_PACKAGE=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.5.0-cp27-none-linux_x86_64.whl
   fi
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -33,7 +38,7 @@ echo "Installing packages..."
 
 # Tensorflow needs some special love
 venv/bin/pip install --upgrade six
-venv/bin/pip install --upgrade https://storage.googleapis.com/tensorflow/mac/tensorflow-0.5.0-py2-none-any.whl
+venv/bin/pip install --upgrade $TENSORFLOW_PACKAGE
 
 venv/bin/pip install -r requirements.txt
 

@@ -75,6 +75,7 @@ def train():
   sys.stdout.flush()
   data_train, data_dev, _ = data_utils.prepare_data(params.data_dir, params.vocab_size)
 
+  # CONFIG FOR GPU (won't work on mac):
   # config = tf.ConfigProto()
   # config.gpu_options.allocator_type = 'BFC'
   # with tf.Session(config=config) as sess:
@@ -132,10 +133,6 @@ def train():
       # Once in a while, we save checkpoint, print statistics, and run evals.
       if current_step % params.steps_per_checkpoint == 0:
 
-        # Save summaries. NOTE: added this
-        # result = sess.run(merged_summaries)
-        # summary_str = result[0]
-        # writer.add_summary(summary_str, current_step)
 
         # Print statistics for the previous epoch.
         perplexity = math.exp(loss) if loss < 300 else float('inf')

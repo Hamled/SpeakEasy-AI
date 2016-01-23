@@ -51,11 +51,9 @@ from test.decode import decode
 from slack import slack
 
 from runtime_variables import params 
-print("In speak_easy.py")
 
 def main(_):
   # try:
-  print('in main function call')
   sys.stdout.flush()
   if params.self_test:
     self_test()

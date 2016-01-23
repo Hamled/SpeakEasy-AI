@@ -35,11 +35,9 @@ def test():
         sentence = line.split(':')[-1].strip()
         response = Marvin.respond(sentence)
         results.append("RESPONSE: %s\n" % response)
-  # template_file.close() 
 
   with open('{0}/{1}'.format(params.test_dir, params.restore_model.split('-')[-1]), 'w') as test_file:
     test_file.write("".join(results))
-  # test_file.close()
 
 
 if __name__ == "__main__":

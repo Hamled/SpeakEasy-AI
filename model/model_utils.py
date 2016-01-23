@@ -36,14 +36,12 @@ def create_model(session, forward_only):
     print("Reading model parameters from %s" % params.restore_model)
     model.saver.restore(session, params.restore_model)
   else:  
+    writer = tf.train.SummaryWriter(params.log_dir, session.graph_def)
     if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
       print("Reading model parameters from %s" % ckpt)
-      writer = tf.train.SummaryWriter(params.log_dir, session.graph_def)
       model.saver.restore(session, ckpt.model_checkpoint_path)
     else:
       print("Created model with fresh parameters.")
-      writer = tf.train.SummaryWriter(params.log_dir, session.graph_def)
-      # tf.train.write_graph(session.graph_def, params.log_dir, 'graph.pbtxt')
       session.run(tf.initialize_all_variables())
 
   return model
