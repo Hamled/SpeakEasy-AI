@@ -1,7 +1,7 @@
 """ChatBot for interactive conversations"""
 import sys
 import os
-path = os.path.join(os.path.dirname(__file__), '..') 
+path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(path)
 
 import tensorflow as tf
@@ -28,7 +28,7 @@ class ChatBot(object):
     Args:
       sentence: Sentence to be used as prompt for the bot.  Assumes that sentence has already been parsed/cleaned (see parse.js and parse.py).
     Return:
-      A string that represents the bot's response.  
+      A string that represents the bot's response.
     """
         # Get token-ids for the input sentence.
     token_ids = data_utils.sentence_to_token_ids(sentence, self.vocab)

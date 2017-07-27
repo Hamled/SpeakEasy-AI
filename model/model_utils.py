@@ -5,11 +5,11 @@ from __future__ import print_function
 
 import sys
 import os
-path = os.path.join(os.path.dirname(__file__), '..') 
+path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(path)
 
 import numpy as np
-from six.moves import xrange 
+from six.moves import xrange
 import tensorflow as tf
 from tensorflow.python.platform import gfile
 
@@ -26,11 +26,11 @@ def create_model(session, forward_only):
         forward_only=forward_only)
   else:
     model = Seq2SeqModel(
-        params.vocab_size, params.max_sentence_length, 
-        params.size, params.num_layers, params.max_gradient_norm, params.batch_size, 
-        params.learning_rate, params.learning_rate_decay_factor, params.model_type, 
+        params.vocab_size, params.max_sentence_length,
+        params.size, params.num_layers, params.max_gradient_norm, params.batch_size,
+        params.learning_rate, params.learning_rate_decay_factor, params.model_type,
         forward_only=forward_only)
-  
+
   ckpt = tf.train.get_checkpoint_state(params.train_dir)
 
   if params.restore_model:

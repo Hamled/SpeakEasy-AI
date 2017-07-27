@@ -6,13 +6,13 @@ from __future__ import print_function
 
 import sys
 import os
-path = os.path.join(os.path.dirname(__file__), '..') 
+path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(path)
 
 import numpy as np
 import time
 import math
-from six.moves import xrange 
+from six.moves import xrange
 
 import tensorflow as tf
 # import tensorflow.python.platform
@@ -40,7 +40,7 @@ def read_data(data_path, max_size=None):
         prompt and response are lists of token-ids.
   """
   data_set = [[] for _ in buckets] if params.buckets else []
-  with gfile.GFile(data_path, mode="r") as data_file:    
+  with gfile.GFile(data_path, mode="r") as data_file:
     # Response line is line after prompt line
     prompt, response = data_file.readline(), data_file.readline()
     counter = 0
@@ -136,7 +136,7 @@ def train():
 
         # Print statistics for the previous epoch.
         perplexity = math.exp(loss) if loss < 300 else float('inf')
-        log_line = ("global step %d learning rate %.4f step-time %.2f perplexity %.2f" % 
+        log_line = ("global step %d learning rate %.4f step-time %.2f perplexity %.2f" %
             (model.global_step.eval(), model.learning_rate.eval(),step_time, perplexity))
         print(log_line)
         sys.stdout.flush()

@@ -5,7 +5,7 @@ from __future__ import print_function
 
 import sys
 import os
-path = os.path.join(os.path.dirname(__file__), '..') 
+path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(path)
 
 import numpy as np
@@ -23,11 +23,11 @@ class Seq2SeqModel(object):
                num_layers, max_gradient_norm, batch_size, learning_rate,
                learning_rate_decay_factor, model_type, use_lstm=True,
                num_samples=512, forward_only=False):
-    """Create the model.  This constructor can be used to created an embedded or embedded-attention, bucketed or non-bucketed model made of single or multi-layer RNN cells. 
+    """Create the model.  This constructor can be used to created an embedded or embedded-attention, bucketed or non-bucketed model made of single or multi-layer RNN cells.
     Args:
       vocab_size: Size of the vocabulary.
       target_vocab_size: Size of the target vocabulary.
-      buckets_or_sentence_length: 
+      buckets_or_sentence_length:
         If using buckets:
           A list of pairs (I, O), where I specifies maximum input length
           that will be processed in that bucket, and O specifies maximum output
@@ -52,13 +52,13 @@ class Seq2SeqModel(object):
       self.buckets = buckets_or_sentence_length
     else:
       self.max_sentence_length = buckets_or_sentence_length
-    
+
     self.vocab_size = vocab_size
     self.batch_size = batch_size
     self.learning_rate = tf.Variable(float(learning_rate), trainable=False)
     self.learning_rate_decay_op = self.learning_rate.assign(
         self.learning_rate * learning_rate_decay_factor)
-    self.global_step = tf.Variable(0, trainable=False) 
+    self.global_step = tf.Variable(0, trainable=False)
 
     # If we use sampled softmax, we need an output projection.
     output_projection = None
@@ -101,13 +101,13 @@ class Seq2SeqModel(object):
     self.decoder_inputs = []
     self.target_weights = []
 
-    # NOTE: If the model is not bucketed, these try blocks will throw an AttributeError and execute code to build a non-bucketed model. 
+    # NOTE: If the model is not bucketed, these try blocks will throw an AttributeError and execute code to build a non-bucketed model.
     try:
       encoder_range = self.buckets[-1][0]
       decoder_range = self.buckets[-1][1]
     except AttributeError:
       encoder_range, decoder_range = self.max_sentence_length, self.max_sentence_length
-    
+
     for i in xrange(encoder_range):  # Last bucket is the biggest one.
       self.encoder_inputs.append(tf.placeholder(tf.int32, shape=[None],
                                                 name="encoder{0}".format(i)))
@@ -161,7 +161,7 @@ class Seq2SeqModel(object):
       self.gradient_norms = []
       self.updates = []
       opt = tf.train.GradientDescentOptimizer(self.learning_rate)
-      
+
       try:
         for b in xrange(len(self.buckets)):
           gradients = tf.gradients(self.losses[b], params)
@@ -213,7 +213,7 @@ class Seq2SeqModel(object):
       if len(decoder_inputs) != decoder_size:
         raise ValueError("Decoder length must be equal to max sentence length")
       if len(target_weights) != decoder_size:
-        raise ValueError("Target weights must be equal to max sentence length")      
+        raise ValueError("Target weights must be equal to max sentence length")
 
     # Input feed: encoder inputs, decoder inputs, target_weights, as provided.
     input_feed = {}
@@ -268,7 +268,7 @@ class Seq2SeqModel(object):
           lists of pairs of input and output data that we use to create a batch.
         bucket_id: Integer, which bucket to get the batch for.
       Else:
-        data: The entire training set.      
+        data: The entire training set.
     Returns:
       The triple (encoder_inputs, decoder_inputs, target_weights) for
       the constructed batch that has the proper format to call step(...) later.
@@ -277,7 +277,7 @@ class Seq2SeqModel(object):
       encoder_size, decoder_size = self.buckets[bucket_id]
     except AttributeError:
       encoder_size, decoder_size = self.max_sentence_length, self.max_sentence_length
-    
+
     encoder_inputs, decoder_inputs = [], []
 
     # Get a random batch of encoder and decoder inputs from data,
