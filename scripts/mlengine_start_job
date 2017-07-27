@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+package_path = "dist/SpeakEasy-0.1.0.tar.gz"
+
+project_id = "#{ENV["SPEAKEASY_PROJECT"] || `gcloud config list project --format "value(core.project)"`.chomp}"
+region = "#{ENV["SPEAKEASY_REGION"] || "us-central1"}"
+env = "#{ENV["SPEAKEASY_ENV"] || "dev"}"
+runtime = "1.0"
+
+bucket_name = "#{project_id}-mlengine-#{env}"
+bucket_path = "gs://#{bucket_name}"
+
+# Create the bucket if necessary
+if !system("gsutil ls -b #{bucket_path} 1> /dev/null 2>&1")
+  `gsutil mb -l #{region} #{bucket_path}`
+end
+
+data_path = "#{bucket_path}/data"
+output_path = "#{bucket_path}/output"
+train_path = "#{bucket_path}/training"
+log_path = "#{bucket_path}/logs"
+
+vocab_size = "#{ENV["SPEAKEASY_VOCAB_SIZE"] || "25000"}"
+source_file = "corpus.txt"
+source_data = "#{bucket_path}/source-data/#{source_file}"
+
+# Upload the source data if necessary
+if !system("gsutil ls #{source_data} 1> /dev/null 2>&1")
+  if ENV.include? "SPEAKEASY_SOURCE_DATA"
+    upload_cmd = "gsutil cp #{ENV["SPEAKEASY_SOURCE_DATA"]} #{source_data}"
+    puts "Uploading source data using cmd:"
+    puts upload_cmd
+    `#{upload_cmd}`
+  else
+    puts "Could not find source data. We tried to find it at:"
+    puts source_data
+    puts "Please upload your data to that location or set SPEAKEASY_SOURCE_DATA to the path of your source data for automatic upload."
+    exit(1)
+  end
+end
+
+# Generate job name
+last_job = `gcloud ml-engine jobs list --sort-by=created | sed -n 2p | cut -d " " -f 1`
+last_job_id = last_job.gsub(/.*[^\d](\d+)$/, '\1').chomp.to_i
+
+job_name = "#{project_id}-#{region}-#{env}-r#{runtime}-j#{last_job_id + 1}".gsub(/[^a-zA-Z0-9_]/, '_')
+
+puts "Running job '#{job_name}'."
+
+# Setup necessary directories
+output_dir = "#{output_path}/#{job_name}"
+job_dir = "#{data_path}/#{job_name}"
+train_dir = "#{train_path}/#{job_name}"
+log_dir = "#{log_path}/#{job_name}"
+
+`touch .keep`
+[output_dir, job_dir, train_dir, log_dir].each do |dir|
+  `gsutil cp .keep #{dir}/`
+end
+`rm .keep`
+
+# Setup the data files
+puts "Copying data files..."
+`gsutil cp #{source_data} #{job_dir}/TRAIN_#{vocab_size}`
+`gsutil cp #{source_data} #{job_dir}/VALIDATION_#{vocab_size}`
+puts "Copying data files complete."
+
+# Start a new training job
+training_cmd = """
+gcloud ml-engine jobs submit training #{job_name} \
+  --job-dir #{output_dir} \
+  --runtime-version #{runtime} \
+  --region #{region} \
+  --packages #{package_path} \
+  --module-name trainer.task \
+  -- \
+  --data_dir #{job_dir} \
+  --train_dir #{train_dir} \
+  --log_dir #{log_dir} \
+  --vocab_size #{vocab_size}
+""".lstrip
+puts "Starting training with command:"
+puts training_cmd
+
+`#{training_cmd}`
