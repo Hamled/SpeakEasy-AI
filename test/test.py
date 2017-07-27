@@ -10,8 +10,8 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-from speak_easy.runtime_variables import params
-from speak_easy.model.chat_bot import ChatBot
+from trainer.runtime_variables import params
+from trainer.model.chat_bot import ChatBot
 
 def test():
   Marvin = ChatBot()
