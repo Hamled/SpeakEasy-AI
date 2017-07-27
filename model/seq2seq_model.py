@@ -248,7 +248,7 @@ class Seq2SeqModel(object):
           output_feed.append(self.outputs[l])
 
     # NOTE: added final arg for summaries
-    output_feed.append(merged_summaries)
+    # output_feed.append(merged_summaries)
     outputs = session.run(output_feed, input_feed)
 
     # NOTE: added outputs[-1] prefix with summaries to both exit paths
