@@ -151,7 +151,7 @@ def train():
 
         if params.buckets:
           # Run evals on development set and print their perplexity.
-          for bucket_id in xrange(len(_buckets)-1):
+          for bucket_id in xrange(len(buckets)-1):
             encoder_inputs, decoder_inputs, target_weights = model.get_batch(dev_set, bucket_id)
             _, _, eval_loss, _ = model.step(sess, encoder_inputs, decoder_inputs, target_weights, True, bucket_id=bucket_id)
             eval_ppx = math.exp(eval_loss) if eval_loss < 300 else float('inf')
