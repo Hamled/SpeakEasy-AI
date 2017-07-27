@@ -36,8 +36,8 @@ def create_model(session, forward_only):
   if params.restore_model:
     print("Reading model parameters from %s" % params.restore_model)
     model.saver.restore(session, params.restore_model)
-  else:  
-    writer = tf.train.SummaryWriter(params.log_dir, session.graph_def)
+  else:
+    writer = tf.summary.FileWriter(params.log_dir, graph=session.graph_def)
     if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
       print("Reading model parameters from %s" % ckpt)
       model.saver.restore(session, ckpt.model_checkpoint_path)
