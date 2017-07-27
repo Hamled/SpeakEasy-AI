@@ -21,6 +21,7 @@ class ChatBot(object):
     self.vocab, self.rev_vocab = data_utils.initialize_vocabulary(vocab_path)
     self.model = model_utils.create_model(self.sess, True)
     self.model.batch_size = 1 # Respond 1 sentence at a time.
+    self.actual_vocab_size = len(self.rev_vocab)
 
   def respond(self, sentence):
     """Talk with the chatbot!
@@ -47,4 +48,4 @@ class ChatBot(object):
     if data_utils.EOS_ID in outputs:
       outputs = outputs[:outputs.index(data_utils.EOS_ID)]
     # Return sentence corresponding to outputs.
-    return " ".join([self.rev_vocab[output] for output in outputs])
+    return " ".join([self.rev_vocab[output] for output in outputs if output < self.actual_vocab_size])
