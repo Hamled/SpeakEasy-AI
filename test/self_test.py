@@ -2,11 +2,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-import sys
-import os
-path = os.path.join(os.path.dirname(__file__), '..') 
-sys.path.append(path) 
-
 import tensorflow as tf
 import random
 
