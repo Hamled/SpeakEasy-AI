@@ -71,10 +71,10 @@ class Seq2SeqModel(object):
         b = tf.get_variable("proj_b", [self.vocab_size])
       output_projection = (w, b)
 
-      def sampled_loss(inputs, labels):
+      def sampled_loss(labels, logits):
         with tf.device("/cpu:0"):
           labels = tf.reshape(labels, [-1, 1])
-          return tf.nn.sampled_softmax_loss(w_t, b, inputs, labels, num_samples,
+          return tf.nn.sampled_softmax_loss(w_t, b, labels, logits, num_samples,
                                             self.vocab_size)
       softmax_loss_function = sampled_loss
 
