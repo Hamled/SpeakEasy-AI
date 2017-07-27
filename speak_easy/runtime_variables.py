@@ -1,6 +1,6 @@
 """Model and logging parameters for Speaky chatbot
 
-This program collects all the parameters for building, training and testing a chat model in a 'params' object.  Each of these parameters is either provided at runtime (as flags or environmental variables) or defaults its value listed below. 
+This program collects all the parameters for building, training and testing a chat model in a 'params' object.  Each of these parameters is either provided at runtime (as flags or environmental variables) or defaults its value listed below.
 
 """
 import tensorflow as tf
