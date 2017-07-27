@@ -88,7 +88,7 @@ def train():
     model = model_utils.create_model(sess, False)
 
     # Set up event logging. NOTE: added this, this is not finished
-    merged_summaries = tf.merge_all_summaries()
+    merged_summaries = tf.summary.merge_all()
     # writer = tf.train.SummaryWriter(params.train_dir, sess.graph_def)
 
     # Read data into buckets and compute their sizes.
