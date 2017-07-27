@@ -14,9 +14,9 @@ import tensorflow as tf
 # import tensorflow.python.platform
 from tensorflow.python.platform import gfile
 
-from model import model_utils
-from data import data_utils
-from runtime_variables import params, buckets
+from ..model import model_utils
+from ..data import data_utils
+from ..runtime_variables import params, buckets
 
 def read_data(data_path, max_size=None):
   """Read data from data files to compile data set.

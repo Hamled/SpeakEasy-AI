@@ -11,7 +11,7 @@ import tensorflow as tf
 from tensorflow.contrib import rnn as rnn_cell
 from tensorflow.contrib import legacy_seq2seq as seq2seq
 
-from data import data_utils
+from ..data import data_utils
 
 class Seq2SeqModel(object):
   def __init__(self, vocab_size, buckets_or_sentence_length, size,

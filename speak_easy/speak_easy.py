@@ -45,11 +45,11 @@ from __future__ import print_function
 import sys
 import tensorflow as tf
 
-from model.train import train
+from .model.train import train
 from test.self_test import self_test
 from test.decode import decode
 
-from runtime_variables import params 
+from .runtime_variables import params
 
 def main(_):
   # try:

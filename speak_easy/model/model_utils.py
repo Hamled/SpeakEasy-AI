@@ -8,8 +8,8 @@ from six.moves import xrange
 import tensorflow as tf
 from tensorflow.python.platform import gfile
 
-from model.seq2seq_model import Seq2SeqModel
-from runtime_variables import params, buckets
+from ..model.seq2seq_model import Seq2SeqModel
+from ..runtime_variables import params, buckets
 
 
 def create_model(session, forward_only):

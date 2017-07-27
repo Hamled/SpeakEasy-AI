@@ -5,8 +5,8 @@ from __future__ import absolute_import
 import tensorflow as tf
 import random
 
-from model.seq2seq_model import Seq2SeqModel
-from runtime_variables import params, buckets
+from speak_easy.model.seq2seq_model import Seq2SeqModel
+from speak_easy.runtime_variables import params, buckets
 
 def self_test():
   with tf.Session() as sess:

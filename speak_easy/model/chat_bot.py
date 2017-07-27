@@ -3,9 +3,9 @@ import os
 import tensorflow as tf
 import numpy as np
 
-from data import data_utils
-from model import model_utils
-from runtime_variables import params
+from ..data import data_utils
+from ..model import model_utils
+from ..runtime_variables import params
 
 class ChatBot(object):
   def __init__(self):
