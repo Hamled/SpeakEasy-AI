@@ -126,7 +126,7 @@ class Seq2SeqModel(object):
       if forward_only:
         self.outputs, self.losses = seq2seq.model_with_buckets(
             self.encoder_inputs, self.decoder_inputs, targets,
-            self.target_weights, self.buckets, self.vocab_size,
+            self.target_weights, self.buckets,
             lambda x, y: seq2seq_f(x, y, True),
             softmax_loss_function=softmax_loss_function)
         # If we use output projection, we need to project outputs for decoding.
@@ -138,20 +138,20 @@ class Seq2SeqModel(object):
       else:
         self.outputs, self.losses = seq2seq.model_with_buckets(
             self.encoder_inputs, self.decoder_inputs, targets,
-            self.target_weights, self.buckets, self.vocab_size,
+            self.target_weights, self.buckets,
             lambda x, y: seq2seq_f(x, y, False),
             softmax_loss_function=softmax_loss_function)
 
     except AttributeError:
       if forward_only:
         self.outputs, self.states = seq2seq_f(self.encoder_inputs, self.decoder_inputs[:-1], True)
-        self.losses = seq2seq.sequence_loss(self.outputs, targets, self.target_weights[:-1], self.vocab_size, softmax_loss_function=softmax_loss_function)
+        self.losses = seq2seq.sequence_loss(self.outputs, targets, self.target_weights[:-1], softmax_loss_function=softmax_loss_function)
         # Project outputs for decoding
         if output_projection is not None:
           self.outputs = [tf.nn.xw_plus_b(output, output_projection[0], output_projection[1]) for output in self.outputs]
       else:
         self.outputs, self.states = seq2seq_f(self.encoder_inputs, self.decoder_inputs[:-1], False)
-        self.losses = (seq2seq.sequence_loss(self.outputs, targets, self.target_weights[:-1], self.vocab_size, softmax_loss_function=softmax_loss_function))
+        self.losses = (seq2seq.sequence_loss(self.outputs, targets, self.target_weights[:-1], softmax_loss_function=softmax_loss_function))
 
 
     # Gradients and SGD update operation for training the model.
