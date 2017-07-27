@@ -20,7 +20,6 @@ from tensorflow.python.platform import gfile
 
 from model import model_utils
 from data import data_utils
-from slack import slack
 from runtime_variables import params, buckets
 
 def read_data(data_path, max_size=None):
@@ -67,9 +66,6 @@ def read_data(data_path, max_size=None):
   return data_set, epoch
 
 def train():
-  slack.connection.notify(
-    text='Training SpeakEasy!',
-  )
   # Prepare reddit data.
   print("Preparing data in %s" % params.data_dir)
   sys.stdout.flush()
@@ -140,9 +136,6 @@ def train():
             (model.global_step.eval(), model.learning_rate.eval(),step_time, perplexity))
         print(log_line)
         sys.stdout.flush()
-        slack.connection.notify(
-          text=log_line,
-        )
         previous_losses.append(loss)
         # Save checkpoint and zero timer and loss.
         checkpoint_path = os.path.join(params.train_dir, "speakEasy_vocab%d_size%d_%s.ckpt" % (params.vocab_size, params.size, params.training_data))
@@ -157,8 +150,5 @@ def train():
             eval_ppx = math.exp(eval_loss) if eval_loss < 300 else float('inf')
             log_line = "eval: bucket %d perplexity %.2f" % (bucket_id, eval_ppx)
             print("  %s" % log_line)
-            slack.connection.notify(
-              text=log_line,
-            )
             sys.stdout.flush()
 

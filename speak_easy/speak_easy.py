@@ -48,7 +48,6 @@ import tensorflow as tf
 from model.train import train
 from test.self_test import self_test
 from test.decode import decode
-from slack import slack
 
 from runtime_variables import params 
 
@@ -62,15 +61,6 @@ def main(_):
   else:
     print ('training')
     train()
-  # except Exception as e:
-  #   slack.connection.notify(
-  #     text='SpeakEasy shutting down!',
-  #     fields=[{
-  #       'title': 'Error',
-  #       'value': str(e),
-  #     }],
-  #   )
-  #   raise e
 
 if __name__ == "__main__":
   print('Running app')
