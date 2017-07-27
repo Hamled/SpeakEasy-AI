@@ -13,8 +13,8 @@ from six.moves import xrange  # pylint: disable=redefined-builtin
 import random
 
 import tensorflow as tf
-from tensorflow.models.rnn import rnn_cell
-from tensorflow.models.rnn import seq2seq
+from tensorflow.contrib import rnn as rnn_cell
+from tensorflow.contrib import legacy_seq2seq as seq2seq
 
 from data import data_utils
 
