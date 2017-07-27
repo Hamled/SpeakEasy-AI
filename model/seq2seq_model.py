@@ -86,13 +86,15 @@ class Seq2SeqModel(object):
     if num_layers > 1:
       cell = rnn_cell.MultiRNNCell([single_cell] * num_layers) #cur_inp, array_ops.concat(1, new_states)
 
+    embedding_size = size
+
     # The seq2seq function: we use embedding for the input and attention (if applicable).
     if model_type is 'embedding_attention':
       def seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
-        return seq2seq.embedding_attention_seq2seq(encoder_inputs, decoder_inputs, cell, vocab_size, vocab_size, output_projection=output_projection, feed_previous=do_decode)
+        return seq2seq.embedding_attention_seq2seq(encoder_inputs, decoder_inputs, cell, vocab_size, vocab_size, embedding_size, output_projection=output_projection, feed_previous=do_decode)
     else: # just build embedding model, I should probably change this to throw an error
       def seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
-        return seq2seq.embedding_rnn_seq2seq(encoder_inputs, decoder_inputs, cell, vocab_size, vocab_size, output_projection=output_projection, feed_previous=do_decode)
+        return seq2seq.embedding_rnn_seq2seq(encoder_inputs, decoder_inputs, cell, vocab_size, vocab_size, embedding_size, output_projection=output_projection, feed_previous=do_decode)
 
     # Feeds for inputs.
     self.encoder_inputs = []
