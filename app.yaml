@@ -1,11 +1,14 @@
-runtime: python27
-api_version: 1
-threadsafe: true
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT server:application
+
+runtime_config:
+  python_version: 2
+
+resources:
+  cpu: 2
+  memory_gb: 4.0
 
 env_variables:
   VOCAB_SIZE: 25000
   DATA_DIR: gs://youmachine-174420-mlengine-dev/ubot/data
-
-handlers:
-- url: /.*
-  script: server.application
