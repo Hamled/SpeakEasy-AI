@@ -45,7 +45,7 @@ def initialize():
 def root():
   return make_response('fizzle bizzle %s' % time.time(), 200)
 
-@application.route('/marvin', methods=["POST"])
+@application.route('/message', methods=["POST"])
 def generate_response():
   print("HERE")
   if not Marvin:
@@ -53,11 +53,10 @@ def generate_response():
     abort(418)
     return
   try:
-    if not request.json or not 'prompt' in request.json:
-      print("abort?")
+    if not request.json or not 'message' in request.json:
       abort(400)
-    response = Marvin.respond(request.json['prompt'])
-    return make_response(jsonify({'response': response}), 200)
+    response = Marvin.respond(request.json['message'])
+    return make_response(jsonify({'content': response}), 200)
   except:
     print(sys.exc_info()[0])
     return make_response(jsonify({'error': sys.exc_info()[0]}), 500)
