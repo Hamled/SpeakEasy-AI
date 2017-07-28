@@ -12,7 +12,7 @@
       "response": "the internet ."
     }
     ```
-    
+
   You can chat with Marvin at https://speakez.tk/
 """
 from __future__ import print_function
@@ -23,11 +23,11 @@ import os
 import time
 from threading import Thread
 
-from flask import Flask, jsonify, make_response, request, abort 
+from flask import Flask, jsonify, make_response, request, abort
 from flask.ext.cors import CORS
 
-from model.chat_bot import ChatBot
-from data import parse
+from trainer.model.chat_bot import ChatBot
+from trainer.data import parse
 
 application = Flask(__name__)
 CORS(application)
