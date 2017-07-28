@@ -42,6 +42,7 @@ tf.app.flags.DEFINE_string("training_data", "FULL", "Data set used to train mode
 tf.app.flags.DEFINE_integer("readline", 0, "Line to start reading for embedding.")
 
 params = tf.app.flags.FLAGS
+params.vocab_size = os.environ.get('vocab_size', params.vocab_size)
 params.data_dir = os.environ.get('data_dir', params.data_dir)
 params.restore_model = os.environ.get('restore_model', params.restore_model)
 
