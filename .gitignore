@@ -28,3 +28,6 @@ slack/secret_slack.py
 
 #AWS
 distributed/awsConfig.js
+
+# Google App Engine
+/lib

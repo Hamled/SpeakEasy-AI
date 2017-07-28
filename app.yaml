@@ -1,0 +1,11 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+env_variables:
+  VOCAB_SIZE: 25000
+  DATA_DIR: gs://youmachine-174420-mlengine-dev/ubot/data
+
+handlers:
+- url: /.*
+  script: server.application
