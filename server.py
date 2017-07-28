@@ -27,7 +27,6 @@ from flask import Flask, jsonify, make_response, request, abort
 from flask.ext.cors import CORS
 
 from trainer.model.chat_bot import ChatBot
-from trainer.data import parse
 
 application = Flask(__name__)
 CORS(application)
@@ -57,9 +56,7 @@ def generate_response():
     if not request.json or not 'prompt' in request.json:
       print("abort?")
       abort(400)
-    parsed_prompt = parse.js_parse.call("parseText", request.json['prompt'])
-    print (parsed_prompt)
-    response = Marvin.respond(parsed_prompt)
+    response = Marvin.respond(request.json['prompt'])
     return make_response(jsonify({'response': response}), 200)
   except:
     print(sys.exc_info()[0])
