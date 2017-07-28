@@ -25,6 +25,7 @@ from threading import Thread
 
 from flask import Flask, jsonify, make_response, request, abort
 from flask.ext.cors import CORS
+from werkzeug.exceptions import HTTPException
 
 from trainer.model.chat_bot import ChatBot
 
@@ -57,9 +58,11 @@ def generate_response():
       abort(400)
     response = Marvin.respond(request.json['message'])
     return make_response(jsonify({'content': response}), 200)
+  except HTTPException as err:
+    return make_response(jsonify({'error': "%s: %s" % (err.name, err.description)}), err.code)
   except:
-    print(sys.exc_info()[0])
-    return make_response(jsonify({'error': sys.exc_info()[0]}), 500)
+    err = sys.exc_info()[0]
+    return make_response(jsonify({'error': "Internal Server Error: An unknown failure occurred. %s" % str(err)}), 500)
 
 
 if __name__ == '__main__':
