@@ -11,4 +11,6 @@ resources:
 
 env_variables:
   VOCAB_SIZE: 25000
-  DATA_DIR: gs://youmachine-174420-mlengine-dev/ubot/data
+  DATA_DIR: gs://youmachine-174420-ubot-dev/data
+  TRAIN_DIR: gs://youmachine-174420-ubot-dev/training
+  LOG_DIR: gs://youmachine-174420-ubot-dev/logs

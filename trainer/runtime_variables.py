@@ -44,5 +44,7 @@ tf.app.flags.DEFINE_integer("readline", 0, "Line to start reading for embedding.
 params = tf.app.flags.FLAGS
 params.vocab_size = int(os.environ.get('VOCAB_SIZE', params.vocab_size))
 params.data_dir = os.environ.get('DATA_DIR', params.data_dir)
+params.train_dir = os.environ.get('TRAIN_DIR', params.data_dir)
+params.log_dir = os.environ.get('LOG_DIR', params.data_dir)
 params.restore_model = os.environ.get('RESTORE_MODEL', params.restore_model)
 
