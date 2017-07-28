@@ -48,7 +48,6 @@ def root():
 
 @application.route('/message', methods=["POST"])
 def generate_response():
-  print("HERE")
   if not Marvin:
     print("Marvin is not ready yet")
     abort(418)
@@ -56,7 +55,11 @@ def generate_response():
   try:
     if not request.json or not 'message' in request.json:
       abort(400)
-    response = Marvin.respond(request.json['message'])
+
+    message = request.json['message']
+    response = Marvin.respond(message)
+    print("Responding to message '%s' with '%s'" % (message, response))
+
     return make_response(jsonify({'content': response}), 200)
   except HTTPException as err:
     return make_response(jsonify({'error': "%s: %s" % (err.name, err.description)}), err.code)
